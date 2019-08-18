@@ -2,12 +2,14 @@ package rawr.components;
 
 import java.util.List;  
 import java.util.LinkedList;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
 import rawr.components.tools.TextUtilities;
 import rawr.components.utilities.CommandManager;
+import rawr.displayer.R_Window;
 
 public abstract class Chapter extends Entity {
 	private String intro;
@@ -20,6 +22,7 @@ public abstract class Chapter extends Entity {
 	private Person protagonist;
 	private boolean finished;
 	private CommandManager manager;
+	private R_Window window;
 	
 	public Chapter(String name, String description) {
 		super(name, description);
@@ -81,6 +84,68 @@ public abstract class Chapter extends Entity {
 			addEvent(event);
 	}
 	
+	
+	/**
+	 * Scroll to the top message in the console.
+	 */
+	public void scrollTop() {
+		window.scrollTop();
+	}
+	
+	/**
+	 * Scroll to the bottom message in the console.
+	 */
+	public void scrollBottom() {
+		window.scrollBottom();
+	}
+	
+	/**
+	 * Print a message to the console with a new line.
+	 * @param s  A String to display
+	 * @param c  The Color of the string
+	 */
+	public void println(String s, Color c) {
+		window.println(s, c);
+	}
+	
+	/**
+	 * Print a message on the console with 
+	 * a new line in default black.
+	 * @param s A String to display
+	 */
+	public void println(String s) {
+		window.println(s);
+	}
+	
+	
+	/**
+	 * Print a message on the console without
+	 * a new line in default black
+	 * @param s A string to display
+	 */
+	public void print(String s) {
+		window.print(s);
+	}
+	
+	
+	/**
+	 * Print a message on the console without
+	 * a new line in a given color
+	 * @param s A String to display
+	 * @param c The color of the String
+	 */
+	public void print(String s, Color c) {
+		window.print(s, c);
+	}
+	
+	/**
+	 * Clear the screen
+	 */
+
+	public void clear() {
+		window.clear();
+	}
+	
 	protected void removeEvent(Event event) {
 		if(event == null) return;
 		this.events.remove(event);
@@ -104,22 +169,24 @@ public abstract class Chapter extends Entity {
 //	}
 	
 	// TODO: Replace this with the commented out one once testing is over
-	public void run() {
+	public void run(R_Window window) {
+		this.window = window;
 		init();
+		
 		// TODO: Create an ErrorHandler for these case
 		if(maps.isEmpty()) return;
 		if(protagonist == null) return;
 		
-		System.out.println(TextUtilities.inChapterTitleFormat(getName()));
-		System.out.println("");
-		System.out.println(intro);
-		System.out.println("");
+		println(TextUtilities.inChapterTitleFormat(getName()));
+		println("");
+		println(intro);
+		println("");
 		
 		while(!hasFinished()) {
-			System.out.print("> ");
+			print("> ");
 			String command = scnr.nextLine();
 			String response = manager.resolve(command);
-			System.out.println(response);
+			println(response);
 			checkEvents();
 		}
 	}

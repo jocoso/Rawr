@@ -1,6 +1,9 @@
 package rawr.components;
 
 import java.util.Queue;
+
+import rawr.displayer.R_Window;
+
 import java.util.LinkedList;
 import java.util.HashMap;
 
@@ -52,11 +55,11 @@ public abstract class Book extends Entity {
 	
 	protected abstract void init();
 	
-	public void begin() {
+	public void begin(R_Window console) {
 		init();
 		if(hasChapters())
-			chapters.poll().run();
-		System.out.println("THE END!");
+			chapters.poll().run(console);
+		console.print("THE END!");
 	}
 
 }

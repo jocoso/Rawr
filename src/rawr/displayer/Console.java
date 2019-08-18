@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import rawr.components.Book;
+
 public abstract class Console extends JFrame{
 
 	/**
@@ -17,11 +19,13 @@ public abstract class Console extends JFrame{
 	boolean art = false;
 	R_Window consoleWindow;
 	R_Input consoleInput;
+	Book book;
 	
-	public Console(String consoleTitle, Theme consoleTheme) {
+	public Console(String consoleTitle, Theme consoleTheme, Book book) {
 		super(consoleTitle);
 		setLookAndFeel();
 		
+		this.book = book;
 		consoleWindow = new R_Window();
 		consoleInput = new R_Input();
 		
@@ -32,14 +36,15 @@ public abstract class Console extends JFrame{
 		setSystemManagement();
 	}
 	
-	public Console(String consoleTitle) {
-		this(consoleTitle, null);
+	public Console(String consoleTitle, Book book) {
+		this(consoleTitle, null, book);
 	}
 	
 	public abstract void prepare(); 
 	
 	public void display() {
 		this.setVisible(true);
+		book.begin(consoleWindow);
 	}
 	
 	/**
