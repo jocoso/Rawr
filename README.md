@@ -7,4 +7,4 @@ Rawr was made with the sole purpose of allow art and literature to work together
 # Use
 
 Rawr is just a series of classes and interfaces that can be used to make a text-adventure game. 
-To use just add rawr.jar into the classpath of your project. [Pending Documentation]
+To use just add rawr.jar into the project's classpath. [Pending Documentation]
