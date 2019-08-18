@@ -7,4 +7,3 @@ Rawr was made with the sole purpose of allow art and literature to work together
 # Cooperate
 
 Rawr is just a series of classes and interfaces that can be used to make a text-adventure game. 
-Just there to be read and to add anything that may be useful or fix anything to wasteful.
