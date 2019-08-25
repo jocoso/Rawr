@@ -181,12 +181,15 @@ public abstract class Console extends JFrame{
 	
 	// MAIN LOOP
 	private void setInputActions() {
+		// TODO: Erase as an error, this must be a warning instead
+		if(cm.isEmpty()) {
+			System.out.println("No commands were given to the manager");
+			System.exit(1);
+		}
 		consoleInput.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				System.out.println(currentChapter.getName());
 				
 				// Get information from the user
 				String text = consoleInput.getText();

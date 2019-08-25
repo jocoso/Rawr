@@ -42,6 +42,8 @@ public abstract class Chapter extends Entity {
 		cm = new CommandManager();
 		protagonist = null;
 		scnr = new Scanner(System.in);
+		
+		init();
 	}
 	
 	/**
@@ -70,6 +72,10 @@ public abstract class Chapter extends Entity {
 	 * Chapter class. 
 	 */
 	public void addCommand(String command_name, Command command) {
+		if(command == null || command_name == null) {
+			System.err.println("Error: none of the parameters can be null");
+			System.exit(1);
+		}
 		String c = TextUtilities.oneWordSanitizer(command_name);
 		cm.addCommand(c, command);
 	}

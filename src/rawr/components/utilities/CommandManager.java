@@ -13,6 +13,10 @@ public class CommandManager {
 		this.commands = new HashMap<String, Command>();
 	}
 	
+	public boolean isEmpty() {
+		return commands.isEmpty();
+	}
+	
 	public void addCommand(String command_name, Command command) {
 		// TODO: Create an error handle for this case
 		if(command_name == null || command == null) return;
