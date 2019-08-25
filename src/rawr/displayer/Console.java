@@ -151,6 +151,11 @@ public abstract class Console extends JFrame{
 		cm = currentChapter.getCommandManager();
 		maps = currentChapter.getMaps();
 		events = currentChapter.getEvents();
+		
+		consoleWindow.println("[========" + currentChapter.getName() + "========]");
+		consoleWindow.println(currentChapter.getIntro());
+		
+		
 		return true;
 	}
 
@@ -173,7 +178,7 @@ public abstract class Console extends JFrame{
 		while (iter.hasNext()) {
 			Event event = iter.next();
 
-			if (event.check())
+			if (event.check(consoleWindow))
 				iter.remove();
 		}
 	}

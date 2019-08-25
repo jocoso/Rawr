@@ -135,7 +135,7 @@ public abstract class Chapter extends Entity {
 		while (iter.hasNext()) {
 			Event event = iter.next();
 
-			if (event.check())
+			if (event.check(null))
 				iter.remove();
 		}
 	}
