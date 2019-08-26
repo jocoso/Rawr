@@ -51,10 +51,8 @@ public abstract class Book extends Entity {
 	protected abstract void init();
 	
 	public void begin() {
-		init();
 		if(hasChapters())
 			chapters.poll().run();
-		System.out.print("THE END!");
 	}
 	
 	public Chapter getNextInLine() {

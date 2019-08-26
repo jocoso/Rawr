@@ -111,9 +111,11 @@ public abstract class Chapter extends Entity {
 	 */
 	protected void addEvent(Event event) {
 		// TODO: Create an ErrorHandler for this case
-		if (event == null)
+		if (event == null) {
+			System.out.println("ERROR: Event is null");
 			return;
-		this.events.add(event);
+		}
+		events.add(event);
 	}
 
 	protected void addEvents(Event[] events) {
@@ -124,9 +126,11 @@ public abstract class Chapter extends Entity {
 	
 
 	protected void removeEvent(Event event) {
-		if (event == null)
+		if (event == null) {
+			System.out.println("ERROR: Event is null");
 			return;
-		this.events.remove(event);
+		}
+		events.remove(event);
 	}
 
 	private void checkEvents() {
@@ -153,8 +157,6 @@ public abstract class Chapter extends Entity {
 	 * in the GUI console.
 	 */
 	public void run() {
-		init();
-
 		// TODO: Create an ErrorHandler for these case
 		if (maps.isEmpty())
 			return;
@@ -167,7 +169,7 @@ public abstract class Chapter extends Entity {
 		System.out.println("");
 
 		while (!hasFinished()) {
-			System.out.println("> ");
+			System.out.print("> ");
 			String command = scnr.nextLine();
 			String response = cm.resolve(command);
 			System.out.println(response);
