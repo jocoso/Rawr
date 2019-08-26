@@ -4,38 +4,80 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import rawr.components.Book;
+import rawr.components.Chapter;
+import rawr.components.Event;
+import rawr.components.GameMap;
+import rawr.components.utilities.CommandManager;
+
+
+/**
+ * The Console class takes a Book class as a required parameter
+ * and uses it to display the story in a GUI window.
+ * 
+ * @author Joshua Collado Soler
+ *
+ */
 public abstract class Console extends JFrame{
 
 	/**
 	 * 
+	 * 
 	 */
+	
+	// System
 	private static final long serialVersionUID = 1L;
+	
+	// Name of computer-programmed variables
 	boolean art = false;
+	
+	// Local Classes
+	Chapter currentChapter;
 	R_Window consoleWindow;
 	R_Input consoleInput;
+	CommandManager cm;
+	Book book;
 	
-	public Console(String consoleTitle, Theme consoleTheme) {
+	// Lists
+	List<GameMap> maps;
+	List<Chapter> chapters;
+	List<Event> events;
+	
+	public Console(String consoleTitle, Theme consoleTheme, Book book) {
 		super(consoleTitle);
-		setLookAndFeel();
 		
+		if(!book.isReady()) {
+			System.err.println("Error: No chapters in book");
+		}
+		
+		this.book = book;
 		consoleWindow = new R_Window();
 		consoleInput = new R_Input();
 		
-		addComponents();
-		setInputActions();
 		prepare();
 		
+		setLookAndFeel();
+		getNextChapter();
+		addComponents();
+		setInputActions();
 		setSystemManagement();
 	}
 	
-	public Console(String consoleTitle) {
-		this(consoleTitle, null);
+	public Console(String consoleTitle, Book book) {
+		this(consoleTitle, null, book);
 	}
 	
+	/**
+	 * Any special non-external custom initialization in the Console class
+	 * goes here.
+	 */
 	public abstract void prepare(); 
 	
 	public void display() {
@@ -96,24 +138,81 @@ public abstract class Console extends JFrame{
 	}
 	
 	/**
+	 * Get next chapter in the book and prepare all the other
+	 * variables to resemble the change.
+	 * getNextChapter() returns true if the book has new chapters
+	 * and false if it is empty.
+	 * @return {@code}boolean
+	 */
+	private boolean getNextChapter() {
+		if(!book.hasChapters()) return false;
+		
+		currentChapter = book.getNextInLine();
+		cm = currentChapter.getCommandManager();
+		maps = currentChapter.getMaps();
+		events = currentChapter.getEvents();
+		
+		consoleWindow.println("[========" + currentChapter.getName() + "========]");
+		consoleWindow.println(currentChapter.getIntro());
+		
+		
+		return true;
+	}
+
+	/**
 	 * Clear the screen
 	 */
-
 	public void clear() {
 		consoleWindow.clear();
 	}
 	
+	/**
+	 * Play all the events of the chapter one by one
+	 * using an Iterator to avoid collisions.
+	 * In the case an event is fulfilled the function 
+	 * will erase it from the list.
+	 */
+	private void checkEvents() {
+		Iterator<Event> iter = events.iterator();
+
+		while (iter.hasNext()) {
+			Event event = iter.next();
+
+			if (event.check(consoleWindow))
+				iter.remove();
+		}
+	}
+
+	
 	// MAIN LOOP
 	private void setInputActions() {
+		// TODO: Erase as an error, this must be a warning instead
+		if(cm.isEmpty()) {
+			System.out.println("No commands were given to the manager");
+			System.exit(1);
+		}
 		consoleInput.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
+				// Get information from the user
 				String text = consoleInput.getText();
 				if (text.length() > 1) {
 					println(text, Color.CYAN);
+					// Process the information
+					String response = cm.resolve(text);
+					
+					//return the response
+					println(response);
 					scrollBottom();
+					checkEvents();
 					consoleInput.selectAll();
+				}
+				
+				if(currentChapter.hasFinished()) {
+					if(!getNextChapter())
+						println("The End");
 				}
 			}
 
