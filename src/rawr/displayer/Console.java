@@ -11,8 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import rawr.components.Book;
-import rawr.components.Chapter;
+import rawr.components.ConsoleBook;
+import rawr.components.ConsoleChapter;
+import rawr.components.TextChapter;
 import rawr.components.Event;
 import rawr.components.GameMap;
 import rawr.components.utilities.CommandManager;
@@ -39,18 +40,18 @@ public abstract class Console extends JFrame{
 	boolean art = false;
 	
 	// Local Classes
-	Chapter currentChapter;
+	ConsoleChapter currentChapter;
 	R_Window consoleWindow;
 	R_Input consoleInput;
 	CommandManager cm;
-	Book book;
+	ConsoleBook book;
 	
 	// Lists
 	List<GameMap> maps;
-	List<Chapter> chapters;
+	List<TextChapter> chapters;
 	List<Event> events;
 	
-	public Console(String consoleTitle, Theme consoleTheme, Book book) {
+	public Console(String consoleTitle, Theme consoleTheme, ConsoleBook book) {
 		super(consoleTitle);
 		
 		if(!book.isReady()) {
@@ -70,7 +71,7 @@ public abstract class Console extends JFrame{
 		setSystemManagement();
 	}
 	
-	public Console(String consoleTitle, Book book) {
+	public Console(String consoleTitle, ConsoleBook book) {
 		this(consoleTitle, null, book);
 	}
 	

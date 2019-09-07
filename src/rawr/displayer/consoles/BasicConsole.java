@@ -2,7 +2,7 @@ package rawr.displayer.consoles;
 
 import java.awt.Dimension;
 
-import rawr.components.Book;
+import rawr.components.ConsoleBook;
 import rawr.displayer.Console;
 
 public class BasicConsole extends Console {
@@ -13,7 +13,7 @@ public class BasicConsole extends Console {
 	private static final long serialVersionUID = 1L;
 	int width, height;
 
-	public BasicConsole(String consoleTitle, Book book) {
+	public BasicConsole(String consoleTitle, ConsoleBook book) {
 		super(consoleTitle, book);
 	}
 	

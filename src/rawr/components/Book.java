@@ -1,16 +1,10 @@
 package rawr.components;
 
-import java.util.Queue; 
 import java.util.LinkedList;
+import java.util.Queue;
 
-/**
- * Books are made to micromanage Chapters in a way it
- * is easier to understand
- * @author Temp
- *
- */
-public abstract class Book extends Entity {
-	private Queue<Chapter> chapters;
+public abstract class Book extends Entity{
+	protected Queue<Chapter> chapters;
 	
 
 	public Book(String name, String description) {
@@ -28,20 +22,9 @@ public abstract class Book extends Entity {
 		return hasChapters();
 	}
 	
-	protected void addChapter(Chapter chapter) {
-		// TODO: Write error handling for this case
-		if(chapter == null) {
-			System.out.println("Error: Chapter is null and cannot be added");
-			System.exit(1);
-		}
-		chapters.add(chapter);
-	}
+	protected abstract void addChapter(Chapter chapter);
 	
-	protected void addChapters(Chapter[] chapters) {
-		for(Chapter chapter: chapters) {
-			addChapter(chapter);
-		}
-	}
+	protected abstract void addChapters(Chapter[] chapters);
 	
 	
 	public boolean hasChapters() {
@@ -49,14 +32,5 @@ public abstract class Book extends Entity {
 	}
 	
 	protected abstract void init();
-	
-	public void begin() {
-		if(hasChapters())
-			chapters.poll().run();
-	}
-	
-	public Chapter getNextInLine() {
-		return chapters.poll();
-	}
 
 }
