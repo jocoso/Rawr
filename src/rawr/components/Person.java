@@ -16,4 +16,7 @@ public abstract class Person extends PersonalEntity{
 		return currentRoom;
 	}
 	
+	public String says(String what) {
+		return getName() + ": " + what;
+	}
 }
