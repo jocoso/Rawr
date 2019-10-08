@@ -14,7 +14,7 @@ public abstract class Chapter extends Entity{
 		// Classes
 		protected String intro;
 		protected CommandManager cm;
-		protected Person protagonist;
+		protected Character protagonist;
 		
 		// Lists
 		protected List<GameMap> maps;
@@ -51,7 +51,7 @@ public abstract class Chapter extends Entity{
 		 * Protagonist are the players at the moment. 
 		 * @param protagonist
 		 */
-		public void setProtagonist(Person protagonist) {
+		public void setProtagonist(Character protagonist) {
 			this.protagonist = protagonist;
 		}
 
@@ -127,11 +127,15 @@ public abstract class Chapter extends Entity{
 			while (iter.hasNext()) {
 				Event event = iter.next();
 
-				if (event.check(null))
+				if (event.check())
 					iter.remove();
 			}
 		}
-
+		
+		public Person getProtagonist() {
+			return protagonist;
+		}
+		
 		public abstract void init();
 
 

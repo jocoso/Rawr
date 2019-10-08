@@ -13,7 +13,6 @@ public class Character extends Person{
 		super(name, description, currentRoom);
 		inventory = new HashMap<String, Item>();
 	}
-		
 	
 	public void addToInventory(Item item) {
 		String name = TextUtilities.oneWordSanitizer(item.getName());
@@ -29,5 +28,5 @@ public class Character extends Person{
 	public boolean isInventoryEmpty() {
 		return inventory.isEmpty();
 	}
-
+	
 }
