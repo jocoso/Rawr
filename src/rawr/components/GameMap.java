@@ -3,6 +3,8 @@ package rawr.components;
 import java.util.Map;
 import java.util.HashMap;
 
+// TODO: Consider named it Setting or Place
+
 public class GameMap {
 	private Map<String, Room> rooms;
 	public static final int NORTH = 0;

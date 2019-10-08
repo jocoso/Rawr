@@ -3,6 +3,12 @@ package rawr.components;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * The Book class helps organizing the chapters in FIFO form
+ * Also ensures the past of information between chapters
+ * @author Temp
+ *
+ */
 public abstract class Book extends Entity{
 	protected Queue<Chapter> chapters;
 	
@@ -16,7 +22,7 @@ public abstract class Book extends Entity{
 	/**
 	 * Verify the book was created thoughtfully before 
 	 * start using it or its components
-	 * @return true if the book was created correctly false otherwise
+	 * @return Boolean
 	 */
 	public boolean isReady() {
 		return hasChapters();
