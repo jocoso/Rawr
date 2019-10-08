@@ -20,6 +20,7 @@ public class GameMap {
 	
 	public String addRoom(String identifier, Room room) {
 		rooms.put(identifier, room);
+		
 		return identifier;
 	}
 	
@@ -42,6 +43,7 @@ public class GameMap {
 		return rooms;
 	}
 	
+	// Gets the room at the opposite side
 	private int opposite(int coordinate) {
 		if(coordinate - 2 < 0) return coordinate + 2;
 		return coordinate - 2;

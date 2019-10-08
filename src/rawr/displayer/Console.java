@@ -16,6 +16,7 @@ import rawr.components.ConsoleChapter;
 import rawr.components.TextChapter;
 import rawr.components.Event;
 import rawr.components.GameMap;
+import rawr.components.Room;
 import rawr.components.utilities.CommandManager;
 
 
@@ -149,12 +150,15 @@ public abstract class Console extends JFrame{
 		if(!book.hasChapters()) return false;
 		
 		currentChapter = book.getNextInLine();
+		currentChapter.prepareTools(consoleWindow, consoleInput);
 		cm = currentChapter.getCommandManager();
 		maps = currentChapter.getMaps();
 		events = currentChapter.getEvents();
+		Room currentRoom = currentChapter.getProtagonist().getCurrentRoom();
 		
 		consoleWindow.println("[========" + currentChapter.getName() + "========]");
 		consoleWindow.println(currentChapter.getIntro());
+		consoleWindow.println("<"+ currentRoom.getName() + ">\n" + currentRoom.getDescription());
 		
 		
 		return true;
@@ -179,7 +183,7 @@ public abstract class Console extends JFrame{
 		while (iter.hasNext()) {
 			Event event = iter.next();
 
-			if (event.check(consoleWindow))
+			if (event.check())
 				iter.remove();
 		}
 	}
@@ -192,22 +196,27 @@ public abstract class Console extends JFrame{
 			System.out.println("No commands were given to the manager");
 			System.exit(1);
 		}
+		
+		checkEvents();
 		consoleInput.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
 				// Get information from the user
 				String text = consoleInput.getText();
-				if (text.length() > 1) {
+				
+				if (text.length() > 0) {
 					println(text, Color.CYAN);
 					// Process the information
-					String response = cm.resolve(text);
-					
-					//return the response
-					println(response);
-					scrollBottom();
+					if(currentChapter.isListening()) {
+						ConsoleChapter.response = text;
+					} else { 
+						String response = cm.resolve(text);
+						//return the response
+						println(response);
+					}
 					checkEvents();
+					scrollBottom();
 					consoleInput.selectAll();
 				}
 				

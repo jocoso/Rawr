@@ -1,21 +1,21 @@
 package rawr.components;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import rawr.components.Transitional;
-import rawr.components.tools.TextUtilities;
 
 public class Room extends PersonalEntity {
 	
 	private final Room[] connections;
 	private final Transitional[] transitions;
-	private ArrayList<Thing> thingsOnRoom;
+	private Map<String, Thing> thingsOnRoom;
 
 	public Room(String name, String description) {
 		super(name, description);
 		connections = new Room[4];
 		transitions = new Transitional[4];
-		thingsOnRoom = new ArrayList<Thing>();
+		thingsOnRoom = new HashMap<String, Thing>();
 	}
 	
 	public void setConnection(Room connect, Transitional transition, int at) {
@@ -56,21 +56,15 @@ public class Room extends PersonalEntity {
 	}
 	
 	public void addObjectToRoom(Thing object) {
-		thingsOnRoom.add(object);
+		thingsOnRoom.put(object.getName(), object);
 	}
 	
-	public void removeObjectOnRoom(Thing object) {
-		thingsOnRoom.remove(object);
+	public void removeObjectOnRoom(String objectName) {
+		thingsOnRoom.remove(objectName);
 	}
 	
 	public Thing search(String thingName) {
-		for(int i = 0; i < thingsOnRoom.size(); i++) {
-			Thing thing = thingsOnRoom.get(i);
-			String itsName = TextUtilities.oneWordSanitizer(thing.getName());
-			if(itsName.equals(thingName))
-				return thing;
-		}
-		return null;
+		return thingsOnRoom.get(thingName);
 	}
 
 }
