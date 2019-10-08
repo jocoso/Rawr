@@ -3,7 +3,7 @@ package rawr.components;
 /**
  * Books are made to micromanage Chapters in a way it is easier to understand
  * 
- * @author Temp
+ * @author Joshua Collado Soler
  *
  */
 public abstract class ConsoleBook extends Book {
@@ -11,20 +11,6 @@ public abstract class ConsoleBook extends Book {
 	public ConsoleBook(String name, String description) {
 		super(name, description);
 		init();
-	}
-
-	/**
-	 * Verify the book was created thoughtfully before start using it or its
-	 * components
-	 * 
-	 * @return true if the book was created correctly false otherwise
-	 */
-	public boolean isReady() {
-		return hasChapters();
-	}
-
-	public boolean hasChapters() {
-		return !chapters.isEmpty();
 	}
 
 	@Override
@@ -53,6 +39,11 @@ public abstract class ConsoleBook extends Book {
 
 	}
 	
+	/**
+	 * Get next chapter in line
+	 * 
+	 * @return ConsoleChapter
+	 */
 	public ConsoleChapter getNextInLine() {
 		return (ConsoleChapter) chapters.poll();
 	}
