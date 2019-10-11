@@ -1,6 +1,9 @@
 package rawr.components;
 
 import java.util.Map;
+
+import rawr.components.tools.TextUtilities;
+
 import java.util.HashMap;
 
 // TODO: Consider named it Setting or Place
@@ -72,5 +75,20 @@ public class GameMap {
 		connect(nill, nill, coordinate, null);
 	}
 	
+	public static int translateCoordinate(String coordinate) {
+		coordinate = TextUtilities.oneWordSanitizer(coordinate);
+		switch(coordinate) {
+		case "north":
+			return 0;
+		case "east":
+			return 1;
+		case "south":
+			return 2;
+		case "west":
+			return 3;
+		default:
+			return -1;
+		}
+	}
 	
 }
