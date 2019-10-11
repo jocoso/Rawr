@@ -159,6 +159,7 @@ public abstract class Console extends JFrame{
 		consoleWindow.println("[========" + currentChapter.getName() + "========]");
 		consoleWindow.println(currentChapter.getIntro());
 		consoleWindow.println("<"+ currentRoom.getName() + ">\n" + currentRoom.getDescription());
+		consoleWindow.println(currentRoom.getRoomObjectDescription(), Color.GRAY);
 		
 		
 		return true;
