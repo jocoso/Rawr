@@ -155,11 +155,12 @@ public abstract class Console extends JFrame{
 		maps = currentChapter.getMaps();
 		events = currentChapter.getEvents();
 		Room currentRoom = currentChapter.getProtagonist().getCurrentRoom();
+		currentRoom.updateDescription();
+		
 		
 		consoleWindow.println("[========" + currentChapter.getName() + "========]");
 		consoleWindow.println(currentChapter.getIntro());
 		consoleWindow.println("<"+ currentRoom.getName() + ">\n" + currentRoom.getDescription());
-		consoleWindow.println(currentRoom.getRoomObjectDescription(), Color.GRAY);
 		
 		
 		return true;

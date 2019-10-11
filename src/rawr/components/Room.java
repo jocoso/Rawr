@@ -11,6 +11,8 @@ public class Room extends PersonalEntity {
 	private final Transitional[] transitions;
 	private Map<String, Thing> thingsOnRoom;
 	private String roomObjectDescription;
+	private String roomPositionInSpace;
+	private String roomDescription;
 
 	public Room(String name, String description) {
 		super(name, description);
@@ -24,8 +26,11 @@ public class Room extends PersonalEntity {
 	// The actual description of the room acordingly everytime an Object
 	// is added or removed
 	private void updateRoomObjectDescription() {
-		if(thingsOnRoom.isEmpty()) 
+		if(thingsOnRoom.isEmpty()) {
 			roomObjectDescription = "The room is totally empty";
+			return;
+		}
+		
 		
 		roomObjectDescription = "The room has: \n";
 
@@ -36,17 +41,52 @@ public class Room extends PersonalEntity {
 		
 	}
 	
-	public String getRoomObjectDescription() {
+	private String getRoomObjectDescription() {
 		return roomObjectDescription;
 	}
 	
-	public void setConnection(Room connect, Transitional transition, int at) {
-		this.connections[at] = connect;
-		this.transitions[at] = transition;
+	private void updateRoomPositionInSpaceDescription() {
+		roomPositionInSpace = "";
+		// NORTH room
+		if(connections[0] != null)
+			roomPositionInSpace += "To the NORTH there is the " + connections[0].getName() + ".\n"; 
+		// EAST room
+		if(connections[1] != null)
+			roomPositionInSpace += "To the EAST there is the " + connections[1].getName() + ".\n"; 
+		// SOUTH room
+		if (connections[2] != null)
+			roomPositionInSpace += "To the SOUTH there is the " + connections[2].getName() + ".\n"; 
+		// WEST room
+		if (connections[3] != null)
+			roomPositionInSpace += "To the WEST there is the " + connections[3].getName() + ".\n"; 
 	}
 	
-	public boolean canTransition(Character character, int at) {
-		Transitional roomTransition = transitions[at];
+	private String getRoomPositionInSpaceDescription() {
+		return roomPositionInSpace;
+	}
+	
+	public void updateDescription() {
+		roomDescription = super.getDescription() + "\n";
+		roomDescription += getRoomObjectDescription() + "\n";
+		roomDescription += getRoomPositionInSpaceDescription() + "\n";
+	}
+	
+	@Override
+	public String getDescription() {
+		return roomDescription;
+	}
+	
+	public void setConnection(Room connect, Transitional transition, int coordinate) {
+		this.connections[coordinate] = connect;
+		this.transitions[coordinate] = transition;
+		updateRoomPositionInSpaceDescription();
+	}
+	
+	public boolean canTransition(Character character, int coordinate) {
+		
+		if(transitions[coordinate] == null) return true;
+		
+		Transitional roomTransition = transitions[coordinate];
 		if(roomTransition.allowsTransition(character)) {
 			return true;
 		}
