@@ -36,7 +36,8 @@ public class Room extends PersonalEntity {
 
 		for (Map.Entry<String, Thing> entry : thingsOnRoom.entrySet()) {
 			Thing object = entry.getValue();
-			roomObjectDescription += "- " + object.getDescription() + "\n";
+			if(object.isVisible())
+				roomObjectDescription += "- " + object.getDescription() + "\n";
 		}
 		
 	}

@@ -6,4 +6,8 @@ public class Thingy extends Thing {
 		super(name, description);
 	}
 	
+	public Thingy(String name, String description, boolean visible) {
+		super(name, description, visible);
+	}
+	
 }
