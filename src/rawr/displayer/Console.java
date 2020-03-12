@@ -2,22 +2,15 @@ package rawr.displayer;
 
 import java.awt.BorderLayout; 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import rawr.components.ConsoleBook;
-import rawr.components.ConsoleChapter;
-import rawr.components.TextChapter;
-import rawr.components.Event;
-import rawr.components.GameMap;
-import rawr.components.Room;
-import rawr.components.utilities.CommandManager;
+import rawr.utilities.Engine;
 
 
 /**
@@ -27,7 +20,7 @@ import rawr.components.utilities.CommandManager;
  * @author Joshua Collado Soler
  *
  */
-public abstract class Console extends JFrame{
+public class Console extends JFrame{
 
 	/**
 	 * 
@@ -37,51 +30,46 @@ public abstract class Console extends JFrame{
 	// System
 	private static final long serialVersionUID = 1L;
 	
-	// Name of computer-programmed variables
-	boolean art = false;
-	
-	// Local Classes
-	ConsoleChapter currentChapter;
+	// Required classes for console to work
 	R_Window consoleWindow;
 	R_Input consoleInput;
-	CommandManager cm;
-	ConsoleBook book;
-	
-	// Lists
-	List<GameMap> maps;
-	List<TextChapter> chapters;
-	List<Event> events;
-	
-	public Console(String consoleTitle, Theme consoleTheme, ConsoleBook book) {
+	Point size; // Keeping this information in case it becomes useful (Doubt it)
+	Engine en;
+
+	/***
+	 * A Window the player can interact with
+	 * 
+	 * @param consoleTitle
+	 * @param width
+	 * @param height
+	 */
+	public Console(String consoleTitle, int width, int height) {
 		super(consoleTitle);
 		
-		if(!book.isReady()) {
-			System.err.println("Error: No chapters in book");
-		}
+		// Waste of memory
+		size = new Point(width, height);
 		
-		this.book = book;
+		// Core part of Console
 		consoleWindow = new R_Window();
 		consoleInput = new R_Input();
 		
-		prepare();
-		
+		// Other important things
 		setLookAndFeel();
-		getNextChapter();
 		addComponents();
 		setInputActions();
 		setSystemManagement();
+		// Set size of Console
+		this.setSize(new Dimension(width, height));
 	}
 	
-	public Console(String consoleTitle, ConsoleBook book) {
-		this(consoleTitle, null, book);
+	public void setEngine(Engine en) {
+		this.en = en;
 	}
 	
+
 	/**
-	 * Any special non-external custom initialization in the Console class
-	 * goes here.
+	 * Not needed, but it makes me feel okay
 	 */
-	public abstract void prepare(); 
-	
 	public void display() {
 		this.setVisible(true);
 	}
@@ -138,33 +126,7 @@ public abstract class Console extends JFrame{
 	public void print(String s, Color c) {
 		consoleWindow.print(s, c);
 	}
-	
-	/**
-	 * Get next chapter in the book and prepare all the other
-	 * variables to resemble the change.
-	 * getNextChapter() returns true if the book has new chapters
-	 * and false if it is empty.
-	 * @return {@code}boolean
-	 */
-	private boolean getNextChapter() {
-		if(!book.hasChapters()) return false;
-		
-		currentChapter = book.getNextInLine();
-		currentChapter.prepareTools(consoleWindow, consoleInput);
-		cm = currentChapter.getCommandManager();
-		maps = currentChapter.getMaps();
-		events = currentChapter.getEvents();
-		Room currentRoom = currentChapter.getProtagonist().getCurrentRoom();
-		currentRoom.updateDescription();
-		
-		
-		consoleWindow.println("[========" + currentChapter.getName() + "========]");
-		consoleWindow.println(currentChapter.getIntro());
-		consoleWindow.println("<"+ currentRoom.getName() + ">\n" + currentRoom.getDescription());
-		
-		
-		return true;
-	}
+
 
 	/**
 	 * Clear the screen
@@ -173,33 +135,11 @@ public abstract class Console extends JFrame{
 		consoleWindow.clear();
 	}
 	
-	/**
-	 * Play all the events of the chapter one by one
-	 * using an Iterator to avoid collisions.
-	 * In the case an event is fulfilled the function 
-	 * will erase it from the list.
-	 */
-	private void checkEvents() {
-		Iterator<Event> iter = events.iterator();
-
-		while (iter.hasNext()) {
-			Event event = iter.next();
-
-			if (event.check())
-				iter.remove();
-		}
-	}
 
 	
 	// MAIN LOOP
 	private void setInputActions() {
-		// TODO: Erase as an error, this must be a warning instead
-		if(cm.isEmpty()) {
-			System.out.println("No commands were given to the manager");
-			System.exit(1);
-		}
 		
-		checkEvents();
 		consoleInput.addActionListener(new ActionListener() {
 
 			@Override
@@ -210,22 +150,12 @@ public abstract class Console extends JFrame{
 				if (text.length() > 0) {
 					println(text, Color.CYAN);
 					// Process the information
-					if(currentChapter.isListening()) {
-						ConsoleChapter.response = text;
-					} else { 
-						String response = cm.resolve(text);
-						//return the response
-						println(response);
-					}
-					checkEvents();
+					en.inputManager(text, "No se");
 					scrollBottom();
 					consoleInput.selectAll();
 				}
 				
-				if(currentChapter.hasFinished()) {
-					if(!getNextChapter())
-						println("The End");
-				}
+				
 			}
 
 		});

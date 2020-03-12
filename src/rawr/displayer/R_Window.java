@@ -114,6 +114,5 @@ public class R_Window extends JScrollPane {
 			e.printStackTrace();
 		}
 	}
-	
-	
 }
+	
