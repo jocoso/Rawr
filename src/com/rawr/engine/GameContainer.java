@@ -3,7 +3,7 @@ package com.rawr.engine;
 import java.awt.event.KeyEvent;
 
 /**
- *  Works as a central hub for the entire program.
+ *  Works as a central hub for the entire engine.
  * @author jocoso
  *
  */
@@ -12,14 +12,16 @@ public class GameContainer implements Runnable {
 	private Console window;
 	private Renderer renderer;
 	private GeneralInput input;
+	private AbstractGame game;
+	
 	private boolean running = false;
 	private final double UPDATE_CAP = 1.0 / 60.0;
 	private int width = 320, height = 240;
 	private float scale = 4f;
 	private String title = "Josh's Text-Adventure Engine v1.0";
 	
-	public GameContainer() {
-		
+	public GameContainer(AbstractGame game) {
+		this.game = game;
 	}
 	
 	public void start() {
@@ -70,6 +72,8 @@ public class GameContainer implements Runnable {
 			unprocessedTime += passedTime;
 			frameTime += passedTime;
 			
+			game.update(this);
+			
 			while(unprocessedTime >= UPDATE_CAP) {
 				unprocessedTime -= UPDATE_CAP;
 				render = true;
@@ -88,6 +92,7 @@ public class GameContainer implements Runnable {
 			
 			if(render) {
 				renderer.clear();
+				game.render(this, renderer);
 				window.update();
 				frames++;
 				
@@ -108,12 +113,6 @@ public class GameContainer implements Runnable {
 		
 		dispose();
 	}
-	
-	public static void main(String[] arg) {
-		GameContainer gc = new GameContainer();
-		gc.start();
-	}
-	
 	
 	public boolean isRunning() {
 		return running;
@@ -149,5 +148,9 @@ public class GameContainer implements Runnable {
 
 	public Console getWindow() {
 		return window;
+	}
+
+	public GeneralInput getInput() {
+		return input;
 	}
 }
