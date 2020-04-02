@@ -1,78 +1,46 @@
 package com.rawr.engine;
 
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JTextField;
+import com.rawr.engine.gfx.Font;
+
 /**
- * Window console of the game.
+ * Organizes the text displayed in the console
+ * 
  * @author jocoso
  *
  */
 public class Console {
-	private JFrame frame;
-	private BufferedImage image;
-	private Canvas canvas;
-	private Graphics g;
-	private BufferStrategy bs;
-	private JTextField textField;
+	private ArrayList<String> console;
+	private ArrayList<Integer> colors;
+	public final int STANDARD_COLOR = 0xffff0000;
+	private final int MARGIN = 5;
 	
-	
-	public Console(GameContainer gc) {
-		
-		image = new BufferedImage(gc.getWidth(), gc.getHeight(), BufferedImage.TYPE_INT_RGB);
-		canvas = new Canvas();
-		textField = new JTextField(20);
-		
-		Dimension d = new Dimension((int) (gc.getWidth() * gc.getScale()), (int) (gc.getHeight() * gc.getScale()));
-		
-		canvas.setPreferredSize(d);
-		canvas.setMaximumSize(d);
-		canvas.setMinimumSize(d);
-		
-		frame = new JFrame(gc.getTitle());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());
-		frame.add(textField, BorderLayout.SOUTH);
-		frame.add(canvas, BorderLayout.CENTER); 
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.setVisible(true);
-		
-		canvas.createBufferStrategy(2);
-		bs = canvas.getBufferStrategy();
-		g = bs.getDrawGraphics();
+	public Console() {
+		console = new ArrayList<String>();
+		colors = new ArrayList<Integer>();
 	}
 	
-	public void update() {
-		// XXX: awt.Graphics class has problems displaying canvas
-		// Without this block of code it will display a blank Frame
-		// Every other execution.
-		do {
-			g = bs.getDrawGraphics();
-			g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
-		} while(bs.contentsRestored() || bs.contentsLost()); 
+	public void add(String text) {
+		add(text, STANDARD_COLOR);
+	}
+	
+	public void add(String text, int color) {
+		console.add(text);
+		colors.add(color);
+	}
+	
+	public void update(Renderer r) {
+		if(console.isEmpty()) return; // Saves a bit of memory
 		
-		bs.show();
+		int yOffset = 0;
 		
+		for(int i = 0; i < console.size(); i++) {
+			
+			r.drawText(console.get(i), 0, yOffset, colors.get(i));
+			yOffset += Font.STANDARD.getFontImage().getHeight() + MARGIN;
+			
+		}
 	}
-
-	public BufferedImage getImage() {
-		return image;
-	}
-
-	public Canvas getCanvas() {
-		return canvas;
-	}
-
-	public JTextField getTextField() {
-		return textField;
-	}
-
+	
 }

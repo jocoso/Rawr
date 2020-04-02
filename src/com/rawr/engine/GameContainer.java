@@ -1,6 +1,8 @@
 package com.rawr.engine;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  Works as a central hub for the entire engine.
@@ -9,10 +11,11 @@ import java.awt.event.KeyEvent;
  */
 public class GameContainer implements Runnable {
 	private Thread thread;
-	private Console window;
+	private Window window;
 	private Renderer renderer;
 	private GeneralInput input;
 	private AbstractGame game;
+	private Console console;
 	
 	private boolean running = false;
 	private final double UPDATE_CAP = 1.0 / 60.0;
@@ -25,10 +28,11 @@ public class GameContainer implements Runnable {
 	}
 	
 	public void start() {
-		window = new Console(this);
+		window = new Window(this);
 		thread = new Thread(this);
 		renderer = new Renderer(this);
 		input = new GeneralInput(this);
+		console = new Console();
 		thread.run(); // Main thread
 	}
 
@@ -79,7 +83,11 @@ public class GameContainer implements Runnable {
 				render = true;
 				
 				//if(input.isKeyUp(KeyEvent.VK_A)) System.out.println("A pressed");
-				if(input.isKeyUp(KeyEvent.VK_ENTER)) System.out.println(window.getTextField().getText());;
+				if(input.isKeyDown(KeyEvent.VK_ENTER)) {
+					console.add(window.getTextField().getText(), 0xff9d2df8);
+					window.getTextField().setText("");
+				}
+				
 				input.update();
 				
 				// TODO: Update game
@@ -89,9 +97,10 @@ public class GameContainer implements Runnable {
 					frames = 0;
 				}
 			}
-			
+			// TODO: Add code to only allow render when something changes
 			if(render) {
 				renderer.clear();
+				console.update(renderer);
 				game.render(this, renderer);
 				window.update();
 				frames++;
@@ -146,7 +155,7 @@ public class GameContainer implements Runnable {
 		this.scale = scale;
 	}
 
-	public Console getWindow() {
+	public Window getWindow() {
 		return window;
 	}
 

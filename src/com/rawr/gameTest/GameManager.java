@@ -14,8 +14,7 @@ public class GameManager implements AbstractGame {
 
 	@Override
 	public void update(GameContainer gc) {
-		if(gc.getInput().isKeyUp(KeyEvent.VK_ENTER)) System.out.println("Enter was pressed");
-		
+			
 	}
 
 	@Override
