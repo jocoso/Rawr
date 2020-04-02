@@ -51,8 +51,16 @@ public class Console {
 	}
 	
 	public void update() {
-		g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
+		// XXX: awt.Graphics class has problems displaying canvas
+		// Without this block of code it will display a blank Frame
+		// Every other execution.
+		do {
+			g = bs.getDrawGraphics();
+			g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
+		} while(bs.contentsRestored() || bs.contentsLost()); 
+		
 		bs.show();
+		
 	}
 
 	public BufferedImage getImage() {
