@@ -12,13 +12,17 @@ import com.rawr.engine.gfx.Font;
  */
 public class Console {
 	private ArrayList<String> console;
-	private ArrayList<Integer> colors;
+	private ArrayList<Integer> lineColors;
 	public final int STANDARD_COLOR = 0xffff0000;
 	private final int MARGIN = 5;
+	private int health = 10;
+	private int w, h;
 	
-	public Console() {
+	public Console(GameContainer gc) {
 		console = new ArrayList<String>();
-		colors = new ArrayList<Integer>();
+		lineColors = new ArrayList<Integer>();
+		w = gc.getWindow().getCanvas().getWidth();
+		h = gc.getWindow().getCanvas().getHeight();
 	}
 	
 	public void add(String text) {
@@ -27,18 +31,34 @@ public class Console {
 	
 	public void add(String text, int color) {
 		console.add(text);
-		colors.add(color);
+		lineColors.add(color);
+	}
+	
+	public void renderBar(String title, int barQty, Renderer r, int x, int y, int color) {
+		String bars = "";
+		
+		for(int i = 0; i < barQty; i++) {
+			bars += "$";
+		}
+		
+		r.drawText(title + bars, x, y, color);
 	}
 	
 	public void update(Renderer r) {
+		// Bars
+		// TODO: generate a way to create bars dynamically
+		// TODO: Create a designated area for bars
+		renderBar("Health: " , 10, r, 0, 0, STANDARD_COLOR);
+		renderBar("Mana: ", 10, r, w-1050, 0, 0xff0276fd);
+		
 		if(console.isEmpty()) return; // Saves a bit of memory
 		
-		int yOffset = 0;
+		int yOffset = 20;
 		
 		for(int i = 0; i < console.size(); i++) {
 			
-			r.drawText(console.get(i), 0, yOffset, colors.get(i));
-			yOffset += Font.STANDARD.getFontImage().getHeight() + MARGIN;
+			r.drawText(console.get(i), 0, yOffset, lineColors.get(i));
+			yOffset += Font.STANDARD.getFontImage().getHeight() + MARGIN; // XXX: Change into actual used font
 			
 		}
 	}

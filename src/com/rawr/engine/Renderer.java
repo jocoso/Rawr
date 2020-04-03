@@ -40,6 +40,7 @@ public class Renderer {
 	
 	// TODO: Add a class that allows RGB conversion to hexa
 	// TODO: Add a complete Image Font
+	// TODO: Implement a static version of this method that will take a font as a parameter
 	public void drawText(String text, int offX, int offY, int color) {
 		text = text.toUpperCase(); // Example given contains only uppercase letter
 		int offset = 0;
@@ -58,5 +59,10 @@ public class Renderer {
 			offset += font.getWidths()[unicode];
 		}
 	}
+
+	public Font getFont() {
+		return font;
+	}
+	
 	
 }

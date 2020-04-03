@@ -32,7 +32,7 @@ public class GameContainer implements Runnable {
 		thread = new Thread(this);
 		renderer = new Renderer(this);
 		input = new GeneralInput(this);
-		console = new Console();
+		console = new Console(this);
 		thread.run(); // Main thread
 	}
 
