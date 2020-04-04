@@ -31,7 +31,6 @@ public class GeneralInput implements KeyListener, MouseListener, MouseMotionList
 	
 	public GeneralInput(GameContainer gc) {
 		this.gc = gc;
-		
 		gc.getWindow().getTextField().addKeyListener(this);
 	}
 	

@@ -1,9 +1,5 @@
 package com.rawr.engine;
 
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *  Works as a central hub for the entire engine.
  * @author jocoso
@@ -15,7 +11,6 @@ public class GameContainer implements Runnable {
 	private Renderer renderer;
 	private GeneralInput input;
 	private AbstractGame game;
-	private Console console;
 	
 	private boolean running = false;
 	private final double UPDATE_CAP = 1.0 / 60.0;
@@ -32,7 +27,6 @@ public class GameContainer implements Runnable {
 		thread = new Thread(this);
 		renderer = new Renderer(this);
 		input = new GeneralInput(this);
-		console = new Console(this);
 		thread.run(); // Main thread
 	}
 
@@ -76,18 +70,12 @@ public class GameContainer implements Runnable {
 			unprocessedTime += passedTime;
 			frameTime += passedTime;
 			
-			game.update(this);
 			
 			while(unprocessedTime >= UPDATE_CAP) {
 				unprocessedTime -= UPDATE_CAP;
 				render = true;
 				
-				//if(input.isKeyUp(KeyEvent.VK_A)) System.out.println("A pressed");
-				if(input.isKeyDown(KeyEvent.VK_ENTER)) {
-					console.add(window.getTextField().getText(), 0xff9d2df8);
-					window.getTextField().setText("");
-				}
-				
+				game.update(this);
 				input.update();
 				
 				// TODO: Update game
@@ -99,8 +87,8 @@ public class GameContainer implements Runnable {
 			}
 			// TODO: Add code to only allow render when something changes
 			if(render) {
+				window.update();
 				renderer.clear();
-				console.update(renderer);
 				game.render(this, renderer);
 				window.update();
 				frames++;

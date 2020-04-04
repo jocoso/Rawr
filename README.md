@@ -1,10 +1,13 @@
 # Rawr 
 
-created this library to help work with text-adventure games in a more flexible environment than IF.
+I created Rawr as to make work with text-adventure games a more flexible and intuitive process.
 
-Rawr was made with the sole purpose of allow art and literature to work together in a way to make text-adventure more intuitive and therefore easier to play. Also to allow a more creative use of the medium.
+Rawr was made with the sole purpose of allowing art and literature to work together to make text-adventure more intuitive and engaging.
 
 # Use
 
-Rawr is just a series of classes and interfaces that can be used to make a text-adventure game. 
-To use just add rawr.jar into the project's classpath. [Pending Documentation]
+[Pending Documentation]
+
+ <img src="res/example.png" alt="alt text" width="400">
+
+
