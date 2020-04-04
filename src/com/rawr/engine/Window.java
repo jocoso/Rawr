@@ -3,6 +3,7 @@ package com.rawr.engine;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -34,6 +35,10 @@ public class Window {
 		canvas.setPreferredSize(d);
 		canvas.setMaximumSize(d);
 		canvas.setMinimumSize(d);
+		
+		Font font1 = new Font("SansSerif", Font.ITALIC, 25);
+		textField.setPreferredSize(new Dimension(d.width, 30));
+		textField.setFont(font1);
 		
 		frame = new JFrame(gc.getTitle());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
