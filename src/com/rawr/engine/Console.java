@@ -1,5 +1,6 @@
 package com.rawr.engine;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -14,14 +15,16 @@ public class Console {
 	private final int BAR_MARGIN = 15;
 	private final int BAR_SECTION_SIZE = 4;
 	
-	private Integer biggestLetter = null;
 	
 	private ArrayList<String> notebook;
 	private ArrayList<Integer> lineColors;
 	private String[] barTitle;
 	private int[] barData;
 	private int totalBars = 0;
-	private int screenWidth;
+	private int screenWidth, screenHeight;
+	private Integer biggestLetter = null;
+	private Point range;
+	private int maxNumberOfMsg;
 	
 	public Console(GameContainer gc) {
 		notebook = new ArrayList<String>();
@@ -39,6 +42,11 @@ public class Console {
 		biggestLetter /= widths.length;
 		
 		screenWidth = gc.getWidth();
+		screenHeight = gc.getHeight();
+		
+		// Magic number is the yOffset of every line + 1 for the line
+		maxNumberOfMsg = (screenHeight / gc.getRenderer().getFont().getFontImage().getHeight()) - 21;
+		range = new Point(0, 0);
 		
 	}
 	
@@ -49,8 +57,7 @@ public class Console {
 	private void sanitize(String input, int charSize, int screenWidth, int color) {
 		// Input do not surpass the screenWidth
 		if(input.length() * charSize < screenWidth) {
-			notebook.add(input);
-			lineColors.add(color);
+			inputText(input, color);
 			return;
 		}
 		
@@ -60,14 +67,11 @@ public class Console {
 		int end = charactersPerLine;
 		
 		while(true) {	
-			
-			notebook.add(input.substring(beg, end));
-			lineColors.add(color);
+			inputText(input.substring(beg, end), color);
 			charactersLeft -=  charactersPerLine;
 			
 			if(charactersLeft < charactersPerLine) {
-				notebook.add(input.substring(end, input.length()));
-				lineColors.add(color);
+				inputText(input.substring(end, input.length()), color);
 				break;
 			}
 			
@@ -77,10 +81,24 @@ public class Console {
 		} 
 		
 	}
-
+	
+	private void inputText(String text, int color) {
+		notebook.add(text);
+		lineColors.add(color);
+		scrollDown();
+	}
+	
+	private void scrollDown() {
+		if(range.y > maxNumberOfMsg) {
+			range.x++;
+			range.y++;
+		} else {
+			range.y++;
+		}
+	}
 	
 	public void write(String text, int color) {
-		if(!text.isBlank()) {
+		if(!text.isEmpty()) {
 			sanitize(text, biggestLetter, screenWidth-10, color); 
 		}
 	}
@@ -116,19 +134,27 @@ public class Console {
 		}
 	}
 	
+	private void goUp() {
+		if(range.y > 0) {
+			range.x--;
+			range.y--;
+		} else {
+			range.y--;
+		}
+	}
+	
 	
 	public void render(Renderer r) {
 		drawBars(r);
 		
 		if(notebook.isEmpty()) return; // Saves a bit of memory
 		
+		
 		int yOffset = 20;
 		
-		for(int i = 0; i < notebook.size(); i++) {
-			
+		for(int i = range.x; i < range.y; i++) {
 			r.drawText(notebook.get(i), 0, yOffset, lineColors.get(i));
 			yOffset += r.getFont().getFontImage().getHeight() + MARGIN; // XXX: Change into actual used font
-			
 		}
 	}
 	
