@@ -10,6 +10,7 @@ public class GameContainer implements Runnable {
 	private Window window;
 	private Renderer renderer;
 	private GeneralInput input;
+	private Console console;
 	private AbstractGame game;
 	
 	private boolean running = false;
@@ -27,6 +28,10 @@ public class GameContainer implements Runnable {
 		thread = new Thread(this);
 		renderer = new Renderer(this);
 		input = new GeneralInput(this);
+		console = new Console(this);
+		
+		game.set(console);
+		
 		thread.run(); // Main thread
 	}
 
@@ -149,5 +154,13 @@ public class GameContainer implements Runnable {
 
 	public GeneralInput getInput() {
 		return input;
+	}
+	
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	public Console getConsole() {
+		return console;
 	}
 }

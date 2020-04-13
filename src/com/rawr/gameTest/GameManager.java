@@ -9,14 +9,14 @@ import com.rawr.engine.Renderer;
 import com.rawr.engine.audio.SoundClip;
 
 public class GameManager implements AbstractGame {
-	private Console console;
 	private SoundClip clip;
 	
 	public GameManager() {
 		clip = new SoundClip("/audio/test.wav");
 		clip.setVolumen(-20);
-		
-		console = new Console();
+	}
+	
+	public void set(Console console) {
 		console.addBar("Health", 10, Console.STANDARD_COLOR);
 		console.addBar("Mana", 10, 0xff0276fd);
 		console.addBar("Sanity", 10, 0xff71C671);
@@ -27,7 +27,7 @@ public class GameManager implements AbstractGame {
 	public void update(GameContainer gc) {
 		if(gc.getInput().isKeyUp(KeyEvent.VK_ENTER)) {
 			String input = gc.getWindow().getTextField().getText();
-			console.write(input, Console.STANDARD_COLOR);
+			gc.getConsole().write(input, Console.STANDARD_COLOR);
 			gc.getWindow().getTextField().setText("");
 			
 			if(input.contentEquals("music")) {
@@ -38,7 +38,7 @@ public class GameManager implements AbstractGame {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		console.render(r);
+		gc.getConsole().render(r);
 	}
 	
 	public static void main(String[] args) {
