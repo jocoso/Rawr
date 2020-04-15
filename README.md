@@ -8,6 +8,8 @@ Rawr was made with the sole purpose of allowing art and literature to work toget
 
 [Pending Documentation]
 
- <img src="res/example.png" alt="alt text" width="400">
+<img src="res/example.png" alt="alt text" width="400">
 
+
+<img src="res/example1.png" alt="alt text" width="400">
 

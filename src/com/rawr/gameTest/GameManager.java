@@ -1,7 +1,5 @@
 package com.rawr.gameTest;
 
-import java.awt.event.KeyEvent;
-
 import com.rawr.engine.AbstractGame;
 import com.rawr.engine.Console;
 import com.rawr.engine.GameContainer;
@@ -17,23 +15,16 @@ public class GameManager implements AbstractGame {
 	}
 	
 	public void set(Console console) {
-		console.addBar("Health", 10, Console.STANDARD_COLOR);
-		console.addBar("Mana", 10, 0xff0276fd);
-		console.addBar("Sanity", 10, 0xff71C671);
-		console.addBar("Hunger", 10, 0xffFFCC11);
+//		console.addBar("Health", 10, Console.STANDARD_COLOR);
+//		console.addBar("Mana", 10, 0xff0276fd);
+//		console.addBar("Sanity", 10, 0xff71C671);
+//		console.addBar("Hunger", 10, 0xffFFCC11);
 	}
 
 	@Override
 	public void update(GameContainer gc) {
-		if(gc.getInput().isKeyUp(KeyEvent.VK_ENTER)) {
-			String input = gc.getWindow().getTextField().getText();
-			gc.getConsole().write(input, Console.STANDARD_COLOR);
-			gc.getWindow().getTextField().setText("");
-			
-			if(input.contentEquals("music")) {
-				clip.play();
-			}
-		}
+		gc.getConsole().update(gc);
+		
 	}
 
 	@Override

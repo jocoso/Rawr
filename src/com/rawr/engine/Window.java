@@ -21,14 +21,12 @@ public class Window {
 	private Canvas canvas;
 	private Graphics g;
 	private BufferStrategy bs;
-	private JTextField textField;
 	
 	
 	public Window(GameContainer gc) {
 		
 		image = new BufferedImage(gc.getWidth(), gc.getHeight(), BufferedImage.TYPE_INT_RGB);
 		canvas = new Canvas();
-		textField = new JTextField(20);
 		
 		Dimension d = new Dimension((int) (gc.getWidth() * gc.getScale()), (int) (gc.getHeight() * gc.getScale()));
 		
@@ -36,14 +34,9 @@ public class Window {
 		canvas.setMaximumSize(d);
 		canvas.setMinimumSize(d);
 		
-		Font font1 = new Font("SansSerif", Font.ITALIC, 25);
-		textField.setPreferredSize(new Dimension(d.width, 30));
-		textField.setFont(font1);
-		
 		frame = new JFrame(gc.getTitle());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		frame.add(textField, BorderLayout.SOUTH);
 		frame.add(canvas, BorderLayout.CENTER); 
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -74,10 +67,6 @@ public class Window {
 
 	public Canvas getCanvas() {
 		return canvas;
-	}
-
-	public JTextField getTextField() {
-		return textField;
 	}
 
 }

@@ -42,6 +42,10 @@ public class GameContainer implements Runnable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	public void addComponent() {
+		
+	}
 
 	public void stop() {
 		

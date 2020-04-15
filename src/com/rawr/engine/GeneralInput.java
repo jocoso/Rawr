@@ -29,9 +29,12 @@ public class GeneralInput implements KeyListener, MouseListener, MouseMotionList
 	private int mouseX, mouseY;
 	private int scroll;
 	
+	private StringBuilder userKeyboardInput;
+	
 	public GeneralInput(GameContainer gc) {
 		this.gc = gc;
-		gc.getWindow().getTextField().addKeyListener(this);
+		userKeyboardInput = new StringBuilder();
+		gc.getWindow().getCanvas().addKeyListener(this);
 	}
 	
 	public void update() {
@@ -55,8 +58,8 @@ public class GeneralInput implements KeyListener, MouseListener, MouseMotionList
 	}
 	
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent arg0) {
-		
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		scroll = e.getWheelRotation();
 	}
 
 	@Override
@@ -113,9 +116,22 @@ public class GeneralInput implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println((int)e.getKeyChar());
+		if(e.getKeyChar() - 32 >= 0 && e.getKeyChar() != 8) { // Avoid newLine character
+			userKeyboardInput.append(e.getKeyChar());
+		} else if(e.getKeyChar() == 8 && userKeyboardInput.length() > 0) { // Backspace
+			userKeyboardInput.delete(userKeyboardInput.length() - 1, userKeyboardInput.length());
+		}
 	}
 	
-
+	public String getDump() {
+		String foo = userKeyboardInput.toString();
+		
+		userKeyboardInput = new StringBuilder();
+		return foo;
+	}
+	
+	public String getRawDump() {
+		return userKeyboardInput.toString();
+	}
 }
