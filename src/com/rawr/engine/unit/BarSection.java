@@ -1,11 +1,16 @@
-package com.rawr.engine.module;
+package com.rawr.engine.unit;
 
+import com.rawr.engine.GameContainer;
 import com.rawr.engine.Renderer;
 
-public class BarSection {
+public class BarSection extends Unit {
 	private final int BAR_SECTION_SIZE = 4;
 	private final int BAR_MARGIN = 15;
 	private final int MARGIN = 5;
+	
+	private final int minimalSize = 100;
+	private int height = 100;
+	private int width;
 	
 	private String[] barTitle;
 	private int[] barData;
@@ -68,12 +73,22 @@ public class BarSection {
 		
 		// Get average size of each individual letter to best calculate the 
 		// horizontal space required by the bar
-		
 		for(int i = 0; i < totalBars; i++) {
 			r.drawText(renderBar(barTitle[i], barData[i*2], '$'), xOffset, 0, barData[(i*2) + 1]);
 			int multiplier = barTitle[i].length() + barData[i*2];
 			xOffset += (multiplier * biggestLetter) + BAR_MARGIN;
 		}
+	}
+
+	@Override
+	public void set(GameContainer gc) {
+		width = gc.getWidth();
+	}
+
+	@Override
+	public void update(GameContainer gc) {
+		// TODO Bar changing code goes here
+		
 	}
 
 }

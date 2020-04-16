@@ -1,8 +1,12 @@
-package com.rawr.engine;
+package com.rawr.engine.unit;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
+import com.rawr.engine.GameContainer;
+import com.rawr.engine.GeneralInput;
+import com.rawr.engine.Renderer;
 
 /**
  * Organizes the text displayed in the console in a way
@@ -11,7 +15,7 @@ import java.util.ArrayList;
  * @author jocoso
  *
  */
-public class Console {
+public class Console extends Unit {
 	// CONSTANTS
 	public static final int STANDARD_COLOR = 0xffff0000;
 	private final int MARGIN = 5;
@@ -28,8 +32,13 @@ public class Console {
 	private int maxNumberOfMsg;			  // How many lines can be displayed based on the console size
 	private GeneralInput input;
 	
-	public Console(GameContainer gc) {
-		
+	
+	public Console() {
+		System.out.println("works");
+	}
+	
+	@Override
+	public void set(GameContainer gc) {
 		notebook = new ArrayList<String>();
 		lineColors = new ArrayList<Integer>();
 		input = gc.getInput();
@@ -56,7 +65,6 @@ public class Console {
 		range = new Point(0, 0);
 		
 	}
-	
 	
 	/**
 	 * All things related to text manipulation prior to displaying are managed in 
@@ -183,5 +191,22 @@ public class Console {
 			write(input.getDump(), Console.STANDARD_COLOR);
 		}
 	}
+	
+	public void setUnitWidth(int screenWidth) {
+		this.screenWidth = screenWidth;
+	}
+	
+	public void setUnitHeight(int screenHeight) {
+		this.screenHeight = screenHeight;
+	}
+	
+	public int getUnitWidth() {
+		return screenWidth;
+	}
+	
+	public int getUnitHeight() {
+		return screenHeight;
+	}
+
 	
 }

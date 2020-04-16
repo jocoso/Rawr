@@ -1,35 +1,69 @@
 package com.rawr.gameTest;
 
 import com.rawr.engine.AbstractGame;
-import com.rawr.engine.Console;
 import com.rawr.engine.GameContainer;
 import com.rawr.engine.Renderer;
 import com.rawr.engine.audio.SoundClip;
+import com.rawr.engine.unit.Console;
+import com.rawr.engine.unit.Grid;
 
 public class GameManager implements AbstractGame {
 	private SoundClip clip;
+	private Console console;
+	private Grid grid;
 	
 	public GameManager() {
 		clip = new SoundClip("/audio/test.wav");
 		clip.setVolumen(-20);
+		console = new Console();
+		
 	}
 	
-	public void set(Console console) {
-//		console.addBar("Health", 10, Console.STANDARD_COLOR);
-//		console.addBar("Mana", 10, 0xff0276fd);
-//		console.addBar("Sanity", 10, 0xff71C671);
-//		console.addBar("Hunger", 10, 0xffFFCC11);
+	@Override
+	public void set(GameContainer gc) {
+		gc.addUnit(console, GameContainer.CENTER);
+		grid = new Grid(gc);
+		/*
+		 * +-------------+
+		 * +   r0 c0     +
+		 * +-------------+
+		 * +   r1 c0     +
+		 * +-------------+
+		 */
+		grid.addRows(2);
+		
+		
+		/*
+		 * +---------------+
+		 * + r0 c0 | r0 c1 +
+		 * +---------------+
+		 * + r1 c0 | r1 c1 +
+		 * +---------------+
+		 */
+		grid.getRow(0).addColumns(1);
+		grid.getRow(1).addColumns(1);
+		
+		grid.getRow(0).setUnit("r0 c0");
+		grid.getRow(1).setUnit("r1 c0");
+		
+		grid.getRow(0).getColumn(1).setUnit("r0 c1");
+		grid.getRow(1).getColumn(1).setUnit("r1 c1");
+		
+		System.out.println(grid.getRow(0).getUnit());
+		System.out.println(grid.getRow(1).getUnit());
+		System.out.println(grid.getRow(0).getColumn(1).getUnit());
+		System.out.println(grid.getRow(1).getColumn(1).getUnit());
 	}
-
+	
 	@Override
 	public void update(GameContainer gc) {
-		gc.getConsole().update(gc);
+	
 		
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		gc.getConsole().render(r);
+		
 	}
 	
 	public static void main(String[] args) {
